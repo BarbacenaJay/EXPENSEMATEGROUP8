@@ -14,6 +14,14 @@ class ExpenseController extends Controller
         $expenses = Auth::user()->expenses()->latest()->get();
         return view('expenses.index', compact('expenses'));
     }
+    
+    public function show(Expense $expense)
+    {
+        if ($expense->user_id !== Auth::id()) {
+            abort(403);
+        }
+        return view('expenses.show', compact('expense'));
+    }
 
     public function create()
     {
@@ -37,14 +45,18 @@ class ExpenseController extends Controller
 
     public function edit(Expense $expense)
     {
-        $this->authorize('update', $expense);
+        if ($expense->user_id !== Auth::id()) {
+            abort(403);
+        }
         $categories = ['Food', 'Bills', 'Transport', 'Shopping', 'Others'];
         return view('expenses.edit', compact('expense', 'categories'));
     }
 
     public function update(Request $request, Expense $expense)
     {
-        $this->authorize('update', $expense);
+        if ($expense->user_id !== Auth::id()) {
+            abort(403);
+        }
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -60,7 +72,9 @@ class ExpenseController extends Controller
 
     public function destroy(Expense $expense)
     {
-        $this->authorize('delete', $expense);
+        if ($expense->user_id !== Auth::id()) {
+            abort(403);
+        }
         $expense->delete();
 
         return redirect()->route('expenses.index')->with('success', 'Expense deleted successfully!');

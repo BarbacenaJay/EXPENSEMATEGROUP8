@@ -35,13 +35,17 @@ class IncomeController extends Controller
 
     public function edit(Income $income)
     {
-        $this->authorize('update', $income);
+        if ($income->user_id !== Auth::id()) {
+            abort(403);
+        }
         return view('incomes.edit', compact('income'));
     }
 
     public function update(Request $request, Income $income)
     {
-        $this->authorize('update', $income);
+        if ($income->user_id !== Auth::id()) {
+            abort(403);
+        }
 
         $validated = $request->validate([
             'source' => 'required|string|max:255',
@@ -56,7 +60,9 @@ class IncomeController extends Controller
 
     public function destroy(Income $income)
     {
-        $this->authorize('delete', $income);
+        if ($income->user_id !== Auth::id()) {
+            abort(403);
+        }
         $income->delete();
 
         return redirect()->route('incomes.index')->with('success', 'Income deleted successfully!');
