@@ -1,32 +1,65 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="row justify-content-center">
-    <div class="col-md-6">
+<style>
+    .auth-card {
+        max-width: 420px;
+        margin: 0 auto;
+    }
+    .auth-icon {
+        font-size: 4rem;
+        color: var(--maroon);
+        margin-bottom: 1rem;
+    }
+    .auth-title {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-weight: 700;
+        color: var(--black);
+        margin-bottom: 1.5rem;
+        font-size: 1.75rem;
+    }
+</style>
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 auth-card">
         <div class="card">
-            <div class="card-header">Login</div>
-            <div class="card-body">
+            <div class="card-body p-4">
+                <div class="text-center">
+                    <i class="ri-user-login-line auth-icon"></i>
+                    <h3 class="auth-title">Welcome Back!</h3>
+                </div>
                 <form action="{{ route('login') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" required>
+                        <label for="email" class="form-label">
+                            <i class="ri-mail-line me-1"></i>Email
+                        </label>
+                        <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" placeholder="Enter your email" required>
                         @error('email')
-                            <div class="text-danger">{{ $message }}</div>
+                            <div class="text-danger small mt-1">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" name="password" id="password" class="form-control" required>
+                        <label for="password" class="form-label">
+                            <i class="ri-lock-line me-1"></i>Password
+                        </label>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password" required>
                         @error('password')
-                            <div class="text-danger">{{ $message }}</div>
+                            <div class="text-danger small mt-1">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">Login</button>
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="ri-login-box-line me-2"></i>Login
+                        </button>
                     </div>
                 </form>
-                <p class="mt-3 text-center">Don't have an account? <a href="{{ route('register') }}">Register</a></p>
+                <div class="text-center mt-4">
+                    <p class="text-muted">Don't have an account?</p>
+                    <a href="{{ route('register') }}" class="btn btn-outline-secondary">
+                        <i class="ri-user-add-line me-1"></i>Create Account
+                    </a>
+                </div>
             </div>
         </div>
     </div>

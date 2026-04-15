@@ -1,47 +1,66 @@
 @extends('layouts.app')
 
 @section('content')
+<h1 class="page-title">
+    <i class="ri-dashboard-line"></i>
+    Welcome back, {{ auth()->user()->name }}!
+</h1>
+
 <div class="row mb-4">
     <div class="col-md-4">
-        <div class="card bg-success text-white">
-            <div class="card-body">
-                <h5 class="card-title">Total Income</h5>
-                <h3>${{ number_format($totalIncome, 2) }}</h3>
-            </div>
+        <div class="stat-card income">
+            <i class="ri-arrow-up-circle-line stat-icon"></i>
+            <p>Total Income</p>
+            <h3>${{ number_format($totalIncome, 2) }}</h3>
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card bg-danger text-white">
-            <div class="card-body">
-                <h5 class="card-title">Total Expenses</h5>
-                <h3>${{ number_format($totalExpense, 2) }}</h3>
-            </div>
+        <div class="stat-card expense">
+            <i class="ri-arrow-down-circle-line stat-icon"></i>
+            <p>Total Expenses</p>
+            <h3>${{ number_format($totalExpense, 2) }}</h3>
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card bg-primary text-white">
-            <div class="card-body">
-                <h5 class="card-title">Balance</h5>
-                <h3>${{ number_format($balance, 2) }}</h3>
-            </div>
+        <div class="stat-card balance">
+            <i class="ri-wallet-3-line stat-icon"></i>
+            <p>Current Balance</p>
+            <h3>${{ number_format($balance, 2) }}</h3>
         </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12 text-center">
+        <a href="{{ route('expenses.create') }}" class="btn btn-danger me-2">
+            <i class="ri-add-circle-line me-1"></i> Add Expense
+        </a>
+        <a href="{{ route('incomes.create') }}" class="btn btn-success">
+            <i class="ri-add-circle-line me-1"></i> Add Income
+        </a>
     </div>
 </div>
 
 <div class="row">
     <div class="col-md-6">
         <div class="card">
-            <div class="card-header bg-dark text-white">
-                <h5 class="mb-0">Recent Expenses</h5>
+            <div class="recent-header expense">
+                <i class="ri-shopping-cart-line"></i>
+                Recent Expenses
             </div>
             <div class="card-body">
                 @if($recentExpenses->isEmpty())
-                    <p class="text-muted">No expenses yet.</p>
+                    <div class="empty-state">
+                        <i class="ri-file-list-3-line"></i>
+                        <p>No expenses yet</p>
+                        <a href="{{ route('expenses.create') }}" class="btn btn-sm btn-danger">Add First Expense</a>
+                    </div>
                 @else
-                    <table class="table table-sm">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>Title</th>
+                                <th>Category</th>
                                 <th>Amount</th>
                                 <th>Date</th>
                             </tr>
@@ -49,9 +68,10 @@
                         <tbody>
                             @foreach($recentExpenses as $expense)
                                 <tr>
-                                    <td>{{ $expense->title }}</td>
-                                    <td>${{ number_format($expense->amount, 2) }}</td>
-                                    <td>{{ $expense->date->format('M d, Y') }}</td>
+                                    <td><strong>{{ $expense->title }}</strong></td>
+                                    <td><span class="badge bg-secondary">{{ $expense->category }}</span></td>
+                                    <td class="text-danger">-${{ number_format($expense->amount, 2) }}</td>
+                                    <td>{{ $expense->date->format('M d') }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -62,14 +82,19 @@
     </div>
     <div class="col-md-6">
         <div class="card">
-            <div class="card-header bg-success text-white">
-                <h5 class="mb-0">Recent Income</h5>
+            <div class="recent-header income">
+                <i class="ri-money-dollar-circle-line"></i>
+                Recent Income
             </div>
             <div class="card-body">
                 @if($recentIncomes->isEmpty())
-                    <p class="text-muted">No income records yet.</p>
+                    <div class="empty-state">
+                        <i class="ri-file-list-3-line"></i>
+                        <p>No income records yet</p>
+                        <a href="{{ route('incomes.create') }}" class="btn btn-sm btn-success">Add First Income</a>
+                    </div>
                 @else
-                    <table class="table table-sm">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>Source</th>
@@ -80,9 +105,9 @@
                         <tbody>
                             @foreach($recentIncomes as $income)
                                 <tr>
-                                    <td>{{ $income->source }}</td>
-                                    <td>${{ number_format($income->amount, 2) }}</td>
-                                    <td>{{ $income->date->format('M d, Y') }}</td>
+                                    <td><strong>{{ $income->source }}</strong></td>
+                                    <td class="text-success">+${{ number_format($income->amount, 2) }}</td>
+                                    <td>{{ $income->date->format('M d') }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -91,10 +116,5 @@
             </div>
         </div>
     </div>
-</div>
-
-<div class="mt-4 text-center">
-    <a href="{{ route('expenses.create') }}" class="btn btn-danger me-2">Add Expense</a>
-    <a href="{{ route('incomes.create') }}" class="btn btn-success">Add Income</a>
 </div>
 @endsection
