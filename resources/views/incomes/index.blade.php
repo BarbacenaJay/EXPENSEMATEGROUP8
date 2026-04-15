@@ -38,8 +38,8 @@
                     @foreach($incomes as $income)
                         <tr>
                             <td><strong>{{ $income->source }}</strong></td>
-                            <td class="text-success fw-bold">+${{ number_format($income->amount, 2) }}</td>
-                            <td>{{ $income->date->format('M d, Y') }}</td>
+                            <td class="text-success fw-bold">+₱{{ number_format($income->amount, 2) }}</td>
+                            <td>{{ \Carbon\Carbon::parse($income->date)->format('M d, Y') }}</td>
                             <td>
                                 <a href="{{ route('incomes.edit', $income) }}" class="btn btn-sm btn-warning action-btn">
                                     <i class="ri-edit-line"></i>

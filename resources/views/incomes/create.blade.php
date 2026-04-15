@@ -29,7 +29,7 @@
                             <i class="ri-money-cny-circle-line me-1"></i>Amount
                         </label>
                         <div class="input-group">
-                            <span class="input-group-text">$</span>
+                            <span class="input-group-text">₱</span>
                             <input type="number" step="0.01" name="amount" id="amount" class="form-control" value="{{ old('amount') }}" placeholder="0.00" required>
                         </div>
                         @error('amount')

@@ -39,7 +39,7 @@
                     @foreach($expenses as $expense)
                         <tr>
                             <td><strong>{{ $expense->title }}</strong></td>
-                            <td class="text-danger fw-bold">-${{ number_format($expense->amount, 2) }}</td>
+                            <td class="text-danger fw-bold">-₱{{ number_format($expense->amount, 2) }}</td>
                             <td>
                                 @php
                                     $categoryColors = [
@@ -54,7 +54,7 @@
                                     {{ $expense->category }}
                                 </span>
                             </td>
-                            <td>{{ $expense->date->format('M d, Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($expense->date)->format('M d, Y') }}</td>
                             <td>
                                 <a href="{{ route('expenses.edit', $expense) }}" class="btn btn-sm btn-warning action-btn">
                                     <i class="ri-edit-line"></i>

@@ -29,7 +29,7 @@
                             <i class="ri-money-cny-circle-line me-1"></i>Amount
                         </label>
                         <div class="input-group">
-                            <span class="input-group-text">$</span>
+                            <span class="input-group-text">₱</span>
                             <input type="number" step="0.01" name="amount" id="amount" class="form-control" value="{{ old('amount') }}" placeholder="0.00" required>
                         </div>
                         @error('amount')
@@ -42,21 +42,11 @@
                         </label>
                         <select name="category" id="category" class="form-select" required>
                             <option value="">Select Category</option>
-                            <option value="Food" {{ old('category') == 'Food' ? 'selected' : '' }}>
-                                <i class="ri-restaurant-line"></i> Food
-                            </option>
-                            <option value="Bills" {{ old('category') == 'Bills' ? 'selected' : '' }}>
-                                <i class="ri-file-text-line"></i> Bills
-                            </option>
-                            <option value="Transport" {{ old('category') == 'Transport' ? 'selected' : '' }}>
-                                <i class="ri-car-line"></i> Transport
-                            </option>
-                            <option value="Shopping" {{ old('category') == 'Shopping' ? 'selected' : '' }}>
-                                <i class="ri-shopping-bag-line"></i> Shopping
-                            </option>
-                            <option value="Others" {{ old('category') == 'Others' ? 'selected' : '' }}>
-                                <i class="ri-more-line"></i> Others
-                            </option>
+                            <option value="Food" {{ old('category') == 'Food' ? 'selected' : '' }}>Food</option>
+                            <option value="Bills" {{ old('category') == 'Bills' ? 'selected' : '' }}>Bills</option>
+                            <option value="Transport" {{ old('category') == 'Transport' ? 'selected' : '' }}>Transport</option>
+                            <option value="Shopping" {{ old('category') == 'Shopping' ? 'selected' : '' }}>Shopping</option>
+                            <option value="Others" {{ old('category') == 'Others' ? 'selected' : '' }}>Others</option>
                         </select>
                         @error('category')
                             <div class="text-danger small mt-1">{{ $message }}</div>

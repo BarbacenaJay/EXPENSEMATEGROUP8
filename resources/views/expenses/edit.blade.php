@@ -30,7 +30,7 @@
                             <i class="ri-money-cny-circle-line me-1"></i>Amount
                         </label>
                         <div class="input-group">
-                            <span class="input-group-text">$</span>
+                            <span class="input-group-text">₱</span>
                             <input type="number" step="0.01" name="amount" id="amount" class="form-control" value="{{ old('amount', $expense->amount) }}" required>
                         </div>
                         @error('amount')
@@ -54,7 +54,7 @@
                         <label for="date" class="form-label">
                             <i class="ri-calendar-line me-1"></i>Date
                         </label>
-                        <input type="date" name="date" id="date" class="form-control" value="{{ old('date', $expense->date->format('Y-m-d')) }}" required>
+                        <input type="date" name="date" id="date" class="form-control" value="{{ old('date', \Carbon\Carbon::parse($expense->date)->format('Y-m-d')) }}" required>
                         @error('date')
                             <div class="text-danger small mt-1">{{ $message }}</div>
                         @enderror

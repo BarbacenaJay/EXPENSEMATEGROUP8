@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Income extends Model
 {
     protected $fillable = ['source', 'amount', 'date'];
+    
+    protected $casts = [
+        'date' => 'date',
+    ];
 
     public function user(): BelongsTo
     {

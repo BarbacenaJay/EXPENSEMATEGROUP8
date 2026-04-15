@@ -26,7 +26,7 @@ class ExpenseController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
-            'category' => 'required|in:Food,Bills,Transport,Shopping,Others',
+            'category' => 'required|string',
             'date' => 'required|date',
         ]);
 
@@ -49,7 +49,7 @@ class ExpenseController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
-            'category' => 'required|in:Food,Bills,Transport,Shopping,Others',
+            'category' => 'required|string',
             'date' => 'required|date',
         ]);
 

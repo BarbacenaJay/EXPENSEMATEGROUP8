@@ -11,21 +11,21 @@
         <div class="stat-card income">
             <i class="ri-arrow-up-circle-line stat-icon"></i>
             <p>Total Income</p>
-            <h3>${{ number_format($totalIncome, 2) }}</h3>
+            <h3>₱{{ number_format($totalIncome, 2) }}</h3>
         </div>
     </div>
     <div class="col-md-4">
         <div class="stat-card expense">
             <i class="ri-arrow-down-circle-line stat-icon"></i>
             <p>Total Expenses</p>
-            <h3>${{ number_format($totalExpense, 2) }}</h3>
+            <h3>₱{{ number_format($totalExpense, 2) }}</h3>
         </div>
     </div>
     <div class="col-md-4">
         <div class="stat-card balance">
             <i class="ri-wallet-3-line stat-icon"></i>
             <p>Current Balance</p>
-            <h3>${{ number_format($balance, 2) }}</h3>
+            <h3>₱{{ number_format($balance, 2) }}</h3>
         </div>
     </div>
 </div>
@@ -70,8 +70,8 @@
                                 <tr>
                                     <td><strong>{{ $expense->title }}</strong></td>
                                     <td><span class="badge bg-secondary">{{ $expense->category }}</span></td>
-                                    <td class="text-danger">-${{ number_format($expense->amount, 2) }}</td>
-                                    <td>{{ $expense->date->format('M d') }}</td>
+                                    <td class="text-danger">-₱{{ number_format($expense->amount, 2) }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($expense->date)->format('M d') }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -106,8 +106,8 @@
                             @foreach($recentIncomes as $income)
                                 <tr>
                                     <td><strong>{{ $income->source }}</strong></td>
-                                    <td class="text-success">+${{ number_format($income->amount, 2) }}</td>
-                                    <td>{{ $income->date->format('M d') }}</td>
+                                    <td class="text-success">+₱{{ number_format($income->amount, 2) }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($income->date)->format('M d') }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
