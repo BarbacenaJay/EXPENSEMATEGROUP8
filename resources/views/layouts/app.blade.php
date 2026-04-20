@@ -429,6 +429,11 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('budgets.index') }}">
+                                <i class="ri-list-check-line me-1"></i> Budgets
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <form action="{{ route('logout') }}" method="POST" class="d-inline">
                                 @csrf
                                 <button type="submit" class="btn nav-link w-100 text-start">

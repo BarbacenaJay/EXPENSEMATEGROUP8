@@ -6,6 +6,26 @@
     Welcome back, {{ auth()->user()->name }}!
 </h1>
 
+@if(!empty($budgetWarnings))
+<div class="row mb-4">
+    <div class="col-12">
+        @foreach($budgetWarnings as $warning)
+            @if($warning['status'] == 'exceeded')
+                <div class="alert alert-danger mb-2">
+                    <i class="ri-error-warning-line me-2"></i>
+                    <strong>❌ Budget Exceeded:</strong> {{ $warning['category'] }} - ₱{{ number_format($warning['spent'], 2) }} / ₱{{ number_format($warning['budget'], 2) }}
+                </div>
+            @else
+                <div class="alert alert-warning mb-2">
+                    <i class="ri-alert-line me-2"></i>
+                    <strong>⚠️ Warning: Near budget limit</strong> for {{ $warning['category'] }} - ₱{{ number_format($warning['spent'], 2) }} / ₱{{ number_format($warning['budget'], 2) }}
+                </div>
+            @endif
+        @endforeach
+    </div>
+</div>
+@endif
+
 <div class="row mb-4">
     <div class="col-md-4">
         <div class="stat-card income">
@@ -35,9 +55,48 @@
         <a href="{{ route('expenses.create') }}" class="btn btn-danger me-2">
             <i class="ri-add-circle-line me-1"></i> Add Expense
         </a>
-        <a href="{{ route('incomes.create') }}" class="btn btn-success">
+        <a href="{{ route('incomes.create') }}" class="btn btn-success me-2">
             <i class="ri-add-circle-line me-1"></i> Add Income
         </a>
+        <a href="{{ route('budgets.index') }}" class="btn btn-dark">
+            <i class="ri-money-dollar-circle-line me-1"></i> Set Budgets
+        </a>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="recent-header expense">
+                <i class="ri-pie-chart-line"></i> Expenses by Category
+            </div>
+            <div class="card-body">
+                <canvas id="pieChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card h-100">
+            <div class="recent-header income">
+                <i class="ri-line-chart-line"></i> Monthly Income vs Expenses
+            </div>
+            <div class="card-body">
+                <canvas id="lineChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="recent-header expense">
+                <i class="ri-bar-chart-line"></i> Weekly Spending
+            </div>
+            <div class="card-body">
+                <canvas id="barChart"></canvas>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -45,8 +104,7 @@
     <div class="col-md-6">
         <div class="card">
             <div class="recent-header expense">
-                <i class="ri-shopping-cart-line"></i>
-                Recent Expenses
+                <i class="ri-shopping-cart-line"></i> Recent Expenses
             </div>
             <div class="card-body">
                 @if($recentExpenses->isEmpty())
@@ -83,8 +141,7 @@
     <div class="col-md-6">
         <div class="card">
             <div class="recent-header income">
-                <i class="ri-money-dollar-circle-line"></i>
-                Recent Income
+                <i class="ri-money-dollar-circle-line"></i> Recent Income
             </div>
             <div class="card-body">
                 @if($recentIncomes->isEmpty())
@@ -117,4 +174,86 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+const categoryLabels = @json(array_keys($expensesByCategory));
+const categoryData = @json(array_values($expensesByCategory));
+const categoryColors = [
+    '#800020', '#2E7D32', '#1565C0', '#F57C00', '#7B1FA2',
+    '#00838F', '#C62828', '#455A64'
+];
+
+new Chart(document.getElementById('pieChart'), {
+    type: 'pie',
+    data: {
+        labels: categoryLabels,
+        datasets: [{
+            data: categoryData,
+            backgroundColor: categoryColors
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'bottom' }
+        }
+    }
+});
+
+new Chart(document.getElementById('lineChart'), {
+    type: 'line',
+    data: {
+        labels: @json($months),
+        datasets: [
+            {
+                label: 'Income',
+                data: @json($monthlyIncome),
+                borderColor: '#2E7D32',
+                backgroundColor: 'rgba(46, 125, 50, 0.1)',
+                fill: true,
+                tension: 0.4
+            },
+            {
+                label: 'Expenses',
+                data: @json($monthlyExpense),
+                borderColor: '#800020',
+                backgroundColor: 'rgba(128, 0, 32, 0.1)',
+                fill: true,
+                tension: 0.4
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'bottom' }
+        },
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+
+new Chart(document.getElementById('barChart'), {
+    type: 'bar',
+    data: {
+        labels: @json($weekLabels),
+        datasets: [{
+            label: 'Weekly Spending',
+            data: @json($weeklySpending),
+            backgroundColor: '#800020'
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+</script>
 @endsection
